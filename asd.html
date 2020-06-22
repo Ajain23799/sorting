@@ -1,0 +1,247 @@
+<html>
+
+<head>
+    <title>Algo/sort</title>
+</head>
+<style type="text/css">
+    button {
+        size: 500px;
+        background: #f69d3c;
+        color: white;
+        font-size: 14px;
+        font-style: bold;
+        border-radius: 10px;
+        padding: 5px;
+    }
+    
+    input {
+        size: 500px;
+        color: black;
+        font-size: 14px;
+        font-style: bold;
+        border-radius: 10px;
+        padding: 5px;
+    }
+</style>
+
+<body align=center style="background-color: plum;">
+    <h1>Algorithm Visualizer</h1>
+    </br>
+
+    <input id="abc" type="text" placeholder="Default is 20" />
+    <button onclick="ramd()"> Choose a random integer dataset </button></br>
+
+    Bubble Sort<input type="radio" name="Algoo" value="Bubble Sort" /></br>
+    Selection Sort<input type="radio" name="Algoo" value="Selection Sort" checked="true" /> </br>
+    Insertion Sort<input type="radio" name="Algoo" value="Insertion Sort" /></br>
+    <input id="searchh" type="number" placeholder="value for search" /> Liner Search<input type="radio" name="sec" value="LinerSearch" /> Binary Search<input type="radio" name="sec" value="BinarySearch" /> </br>
+    <button onclick="search()">Start Visualizer</button></br>
+
+    <p id="demo" style="background-color: red; width: '350'; height: 30px;"></p>
+    <canvas id="myCanvas" width='1350' height='400' style='border: 2px solid silver; background-color:powderblue ;' />
+
+    <script>
+        let listOfValues = [];
+
+        function ramd() {
+            let arr = [];
+            let ab = document.getElementById('abc').value;
+            if (ab == '') {
+                size = 20;
+            } else {
+                size = ab;
+            }
+            while (size) {
+                const randomNumber = Math.ceil(Math.random() * 300);
+                listOfValues.push(randomNumber);
+                size--;
+            }
+
+            draw(listOfValues, 0);
+            return arr;
+
+            // selectAlgo(arr);
+
+        }
+
+        window.onload = function() {
+            canvas = document.getElementById('myCanvas');
+            // draw(arr, 0);
+        }
+
+        function draw(array, color) {
+            if (canvas.getContext) {
+                console.log('i am redrawing this as array updates--> ', array);
+                let ctx = canvas.getContext('2d');
+                let width = 50;
+                var currX = 10;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for (let i = 0; i < array.length; i++) {
+                    if (i == color) {
+                        ctx.fillStyle = 'red';
+                    } else {
+                        ctx.fillStyle = 'blue';
+                    }
+
+                    var h = array[i];
+                    ctx.font = 'black bold 10px';
+                    ctx.fillText(array[i], currX, canvas.height - (h + 16));
+                    ctx.fillRect(currX, canvas.height - (h + 12), width, h);
+                    currX += width + 2;
+
+                }
+            }
+        }
+
+
+        function selectAlgo() {
+
+            let radios = document.getElementsByName('Algoo');
+            let len = radios.length;
+            let val;
+            for (let i = 0; i < len; i++) {
+                if (radios[i].checked) {
+                    val = radios[i].value;
+                }
+            }
+            if (val === 'Selection Sort') {
+                console.log("asuci");
+                let a = listOfValues;
+                let len = a.length;
+                let i, j, temp, index;
+
+                for (i = 0; i < len; i++) {
+                    index = i;
+                    for (j = i; j < len; j++) {
+                        if (a[j] < a[index]) {
+                            index = j;
+
+                        }
+                    }
+                    temp = a[index];
+                    a[index] = a[i];
+                    a[i] = temp;
+                    draw(a, i);
+
+                }
+
+            } else if (val === 'Bubble Sort') {
+                console.log('i am bubble sort')
+                let a = listOfValues;
+                let len = a.length;
+                let i, j, temp;
+                for (i = 0; i < len; i++) {
+                    for (j = 0; j < len; j++) {
+                        //  setTimeout(function() {
+                        if (a[j] > a[j + 1]) {
+                            temp = a[j];
+                            a[j] = a[j + 1];
+                            a[j + 1] = temp;
+                            //console.log(a);
+
+
+                        }
+                        draw(a, i);
+
+                        //   }, 2000);
+                    }
+                }
+            } else if (val === 'Insertion Sort') {
+                let a = listOfValues;
+                len = a.length;
+                let i, j, temp;
+                for (i = 1; i < len; i++) {
+                    temp = a[i];
+                    j = i - 1;
+                    while (temp < a[j]) {
+                        a[j + 1] = a[j];
+                        j--;
+                        draw(a, i);
+                    }
+                    a[j + 1] = temp;
+
+                }
+
+
+            }
+
+
+            return false;
+        }
+
+        function search() {
+            selectAlgo()
+            let a = listOfValues;
+            let len = a.length;
+
+            let num = document.getElementById('searchh').value;
+
+            let ser = document.getElementsByName('sec');
+            let val;
+            for (let i = 0; i < 2; i++) {
+                if (ser[i].checked) {
+                    val = ser[i].value;
+
+                }
+            }
+
+            if (val == 'LinerSearch') {
+
+                for (i = 0; i < len; i++) {
+                    f = 0;
+                    if (a[i] == num) {
+                        let found = num;
+                        f = 0;
+                        console.log('found');
+                        document.getElementById("demo").innerHTML = ("Position:-" + (i + 1) + "  Found The number");
+                        draw(a, i);
+
+                        break;
+                    } else {
+                        f++;
+                    }
+
+                }
+                if (f != 0) {
+                    document.getElementById("demo").innerHTML = ("Not Found!!!!");
+                    console.log("not found");
+                }
+            } else {
+                if (val == 'BinarySearch') {
+                    let a = listOfValues;
+                    var i = 0;
+                    var u = a.length - 1;
+                    let p = 0;
+                    while (i <= u) {
+                        var m = Math.floor((i + u) / 2);
+                        console.log(m);
+                        console.log(num);
+                        if (num == a[m]) {
+
+                            p = 1;
+                            draw(a, i);
+                            break;
+                        } else if (num > a[m]) {
+                            i = m + 1;
+                        } else if (num < a[m]) {
+                            u = m - 1;
+                        }
+                    }
+                    if (p == 1) {
+
+                        document.getElementById("demo").innerHTML = ("Position:" + (i + 1) + "  Found The number ");
+                    } else
+                        document.getElementById("demo").innerHTML = ("Not Found The number")
+                }
+
+            }
+
+
+
+
+
+        }
+    </script>
+</body>
+
+</html>
